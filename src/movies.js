@@ -18,13 +18,12 @@ function howManyMovies(moviesArray) {
 
 // Iteration 3: All scores average - Get the average of all scores with 2 decimals
 function scoresAverage(moviesArray) {
-    try{
+    if(moviesArray.length==0){return 0}
     let scores = moviesArray.map(movie=> movie.score)
-    return +(scores.reduce(function(accumulator, currentValue) {if (currentValue!=undefined){return accumulator + currentValue;}else{return accumulator}}) / scores.length).toFixed(2)
-    }
-    catch{
-        return 0
-    }
+    let sum = scores.reduce(function(accumulator, currentValue) {
+        if (currentValue!=undefined){return accumulator + currentValue;}
+        else{return accumulator}});
+    return +( sum / scores.length).toFixed(2);
 }
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
@@ -38,7 +37,7 @@ function orderByYear(moviesArray) {
     let newArray = structuredClone(moviesArray);
     return newArray.sort(function (a, b) {
         if (a.year!=b.year){return a.year - b.year}
-      else { return a.title.charCodeAt(0)- b.title.charCodeAt(0) }})}
+      else { return a.title.localeCompare(b.title) }})}
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
 function orderAlphabetically(moviesArray) {
@@ -63,14 +62,14 @@ function turnHoursToMinutes(moviesArray) {
 function bestYearAvg(moviesArray) {
     if (moviesArray.length==0){return null}
     let years =Array.from(new Set(moviesArray.map(m => m.year)));
+
     let avgYears = years.map(function(y) {
       let filteredArray= moviesArray.filter(m => m.year == y);
-      let yearAvg = {};
-      yearAvg['year']=y
-      yearAvg['score']=scoresAverage(filteredArray);
-      return yearAvg;
-      }); 
+      return {'year':y,'score':scoresAverage(filteredArray)};}); 
+
     let bestYear = avgYears.sort(function(a,b) {
         if(b.score!=a.score){return b.score-a.score} else{return a.year-b.year};})[0];
+        
     return `The best year was ${bestYear.year} with an average score of ${bestYear.score}`
   }
+
