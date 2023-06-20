@@ -6,7 +6,7 @@ function getAllDirectors(moviesArray) {
 }
 
 function getAllDirectorsBonus(moviesArray) {
-    return Array.from(Set(moviesArray.map(m=> m['director'])))
+    return Array.from(new Set(getAllDirectors(moviesArray)))
 }
 
 // Iteration 2: Steven Spielberg. The best? - How many drama movies did STEVEN SPIELBERG direct?
