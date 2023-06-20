@@ -20,7 +20,7 @@ function howManyMovies(moviesArray) {
 function scoresAverage(moviesArray) {
     try{
     let scores = moviesArray.map(movie=> movie.score)
-    return +(scores.filter(m=>m!=undefined).reduce((accumulator, currentValue) => accumulator + currentValue) / scores.length).toFixed(2)
+    return +(scores.reduce(function(accumulator, currentValue) {if (currentValue!=undefined){return accumulator + currentValue;}else{return accumulator}}) / scores.length).toFixed(2)
     }
     catch{
         return 0
