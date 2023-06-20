@@ -28,16 +28,49 @@ function scoresAverage(moviesArray) {
 }
 
 // Iteration 4: Drama movies - Get the average of Drama Movies
-function dramaMoviesScore(moviesArray) {}
+function dramaMoviesScore(moviesArray) {
+    let filteredArray= moviesArray.filter(m => m.genre.includes('Drama'));
+    return scoresAverage(filteredArray); 
+}
 
 // Iteration 5: Ordering by year - Order by year, ascending (in growing order)
-function orderByYear(moviesArray) {}
+function orderByYear(moviesArray) {
+    let newArray = structuredClone(moviesArray);
+    return newArray.sort(function (a, b) {
+        if (a.year!=b.year){return a.year - b.year}
+      else { return a.title.charCodeAt(0)- b.title.charCodeAt(0) }})}
 
 // Iteration 6: Alphabetic Order - Order by title and print the first 20 titles
-function orderAlphabetically(moviesArray) {}
+function orderAlphabetically(moviesArray) {
+    return moviesArray.map(m=>m.title).sort().slice(0,20)
+}
 
 // BONUS - Iteration 7: Time Format - Turn duration of the movies from hours to minutes
-function turnHoursToMinutes(moviesArray) {}
+function turnHoursToMinutes(moviesArray) {
+    return moviesArray.map(function (m) {
+        let new_m = structuredClone(m);
+        let dur = new_m.duration;                
+        let hour = 0;
+        let min = 0;
+        if (dur.includes('h')){hour+=+dur.match(/(\d+)h/)[1] *60}
+        if (dur.includes('min')){min+=+dur.match(/(\d+)min/)[1]}
+        new_m['duration'] =  hour+min;
+        return new_m;})
+    };
+
 
 // BONUS - Iteration 8: Best yearly score average - Best yearly score average
-function bestYearAvg(moviesArray) {}
+function bestYearAvg(moviesArray) {
+    if (moviesArray.length==0){return null}
+    let years =Array.from(new Set(moviesArray.map(m => m.year)));
+    let avgYears = years.map(function(y) {
+      let filteredArray= moviesArray.filter(m => m.year == y);
+      let yearAvg = {};
+      yearAvg['year']=y
+      yearAvg['score']=scoresAverage(filteredArray);
+      return yearAvg;
+      }); 
+    let bestYear = avgYears.sort(function(a,b) {
+        if(b.score!=a.score){return b.score-a.score} else{return a.year-b.year};})[0];
+    return `The best year was ${bestYear.year} with an average score of ${bestYear.score}`
+  }
